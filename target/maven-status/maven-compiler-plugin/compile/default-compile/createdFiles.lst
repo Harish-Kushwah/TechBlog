@@ -1,9 +1,12 @@
-com\tech\blog\helper\ConnectionProvider.class
 com\tech\blog\servlets\LoginServlet.class
+com\tech\blog\helper\FileHelper.class
+com\tech\blog\entity\Message.class
+com\tech\blog\helper\ConnectionProvider.class
+com\tech\blog\servlets\MultiConfig.class
 com\techblog\resources\JakartaEE8Resource.class
 com\techblog\JakartaRestConfiguration.class
 com\tech\blog\servlets\LogoutServlet.class
 com\tech\blog\dao\UserDao.class
 com\tech\blog\servlets\RegisterServlet.class
-com\tech\blog\entity\Message.class
+com\tech\blog\servlets\EditServlet.class
 com\tech\blog\entity\User.class

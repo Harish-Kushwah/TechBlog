@@ -56,6 +56,7 @@ public class RegisterServlet extends HttpServlet {
 
                 //create a user dao object
                 User user = new User(name, email, password, gender, about);
+                user.setProfile("default.jpg");
                 UserDao dao;
                 try {
 

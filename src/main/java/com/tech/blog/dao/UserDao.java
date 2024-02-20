@@ -23,13 +23,15 @@ public class UserDao {
     public boolean saveUser(User user) {
         boolean isDataInsert = false;
         try {
-            String query = "INSERT INTO public.user( name, email, password, gender, about) VALUES (?, ?, ?, ?, ?);";
+            String query = "INSERT INTO public.user( name, email, password, gender, about,profile) VALUES (?, ?, ?, ?, ?,?);";
             PreparedStatement statement = this.con.prepareStatement(query);
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPassword());
             statement.setString(4, user.getGender());
             statement.setString(5, user.getAbout());
+            statement.setString(6, user.getProfile());
+            
 
             statement.executeUpdate();
             isDataInsert = true;
@@ -60,7 +62,14 @@ public class UserDao {
                 user.setId(res.getInt("id"));
                 user.setGender(res.getString("gender"));
                 user.setReg_date(res.getTimestamp("reg_date"));
+                
                 user.setProfile(res.getString("profile"));
+//                if(profile_name==null){
+//                    user.setProfile("default.jpg");
+//                }
+//                else{
+//                    user.setProfile(profile_name);
+//                }
             }
         }
         catch(Exception exp){
@@ -68,4 +77,27 @@ public class UserDao {
         }
         return user;
     }
+
+    public boolean updateUser(User user)
+    {
+        boolean flag = false;
+        try{
+            String query = "Update public.user set name=?,email=?,password=?,about=?,profile=? where id=?";
+            PreparedStatement statement = this.con.prepareStatement(query);
+            statement.setString(1, user.getName());
+            statement.setString(2, user.getEmail());
+            statement.setString(3, user.getPassword());
+            statement.setString(4, user.getAbout());
+            statement.setString(5, user.getProfile());
+            statement.setInt(6, user.getId());
+            
+            statement.executeUpdate();
+            flag = true;
+        }
+        catch(Exception exp){
+            exp.printStackTrace();
+        }
+        return flag;
+    }
+
 }

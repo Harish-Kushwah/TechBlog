@@ -86,12 +86,15 @@
               <div class="modal-body">
                   <div class="container text-center ">
                       <% String name =user.getProfile();
-                            if(name==null){
-                            name = "default.jpg";
-                          }
+                            out.println("<h1>" + name+ "</h1>");
+//                            if(name == null){
+//                            name = "default.jpg";
+//                          } 
+//                            name = "error.png";
+                            
                       
                       %>
-                      <img src="img/<%= name %>" class="img-fluid " style="border-radius: 50%; max-width: 150px">
+                      <img src="pic/<%= name %>" class="img-fluid " style="border-radius: 50%; max-width: 150px">
                       <h5 class="modal-title" id="exampleModalLabel"><%= user.getName() %></h5>
                   
                       <!--details-->
@@ -128,7 +131,7 @@
                       <!--profile edit form-->
                       <div id="profile-edit" style="display:none;" class="table-responsive-sm">
                           <h5 class="mt-3">Please Edit Carefully</h5>
-                          <form  >
+                          <form action="EditServlet" method="POST" enctype="multipart/form-data" >
                               <table class="table " style=" ">
                           
                                   <tbody >

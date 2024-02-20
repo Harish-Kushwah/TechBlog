@@ -1,9 +1,12 @@
 D:\JavaProject\TechBlog\src\main\java\com\techblog\resources\JakartaEE8Resource.java
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\dao\UserDao.java
+D:\JavaProject\TechBlog\src\main\java\com\tech\blog\servlets\MultiConfig.java
+D:\JavaProject\TechBlog\src\main\java\com\tech\blog\servlets\EditServlet.java
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\servlets\LoginServlet.java
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\entity\User.java
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\servlets\LogoutServlet.java
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\entity\Message.java
+D:\JavaProject\TechBlog\src\main\java\com\tech\blog\helper\FileHelper.java
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\servlets\RegisterServlet.java
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\helper\ConnectionProvider.java
 D:\JavaProject\TechBlog\src\main\java\com\techblog\JakartaRestConfiguration.java

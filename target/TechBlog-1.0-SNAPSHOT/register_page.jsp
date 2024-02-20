@@ -27,7 +27,7 @@
         <%@include file="normal_navbar.jsp" %>
         <section id="register-section">
         <main class="d-flex align-items-center primary-background banner-background p5" style="padding-bottom: 80px">
-            <div class="container">
+            <div class="container ">
                 <div class="row">
                     <div class="col-md-5 offset-md-4">
                         <form action="RegisterServlet" method="POST" id="reg_form">
