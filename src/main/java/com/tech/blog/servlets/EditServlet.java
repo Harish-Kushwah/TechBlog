@@ -5,6 +5,7 @@
 package com.tech.blog.servlets;
 
 import com.tech.blog.dao.UserDao;
+import com.tech.blog.entity.Message;
 import com.tech.blog.entity.User;
 import com.tech.blog.helper.ConnectionProvider;
 import com.tech.blog.helper.FileHelper;
@@ -39,40 +40,27 @@ public class EditServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet EditServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            
             HttpSession s = request.getSession();
-            User user = (User)s.getAttribute("currentUser");
-         
-            
+            User user = (User) s.getAttribute("currentUser");
+
             String email = request.getParameter("user_email");
-            String  name = request.getParameter("user_name");
-            
+            String name = request.getParameter("user_name");
+
             String password = request.getParameter("user_pass");
             String about = request.getParameter("user_about");
             Part part = request.getPart("image");
-            String imageName = user.getProfile(); 
-            if(part!=null){
-             imageName= part.getSubmittedFileName();
-             if(imageName.length()==0){
-                 imageName = user.getProfile();
-                 out.println("image name is not send from the form");
-             }
-             else{
-//                 String path =  s.getServletContext().getRealPath("/") + "pic" + File.separator + user.getProfile();
-//                 FileHelper.deleteFile(path);
-             }
-           
+            String imageName = user.getProfile();
+            String oldProfileName = user.getProfile();
+            boolean isProfilePicEdit = false;
+            if (part != null) {
+                imageName = part.getSubmittedFileName();
+                isProfilePicEdit = true;
+                if (imageName.length() == 0) {
+                    imageName = user.getProfile();
+                    isProfilePicEdit = false;
+                    out.println("image name is not send from the form");
+                }
             }
-           
-            out.println("Image name is :" + imageName);
-            
             //get user from the session
             user.setEmail(email);
             user.setAbout(about);
@@ -80,45 +68,39 @@ public class EditServlet extends HttpServlet {
             user.setPassword(password);
             user.setName(name);
             user.setProfile(imageName);
-           
-            
-            
+
             try {
                 //update database
 
                 UserDao dao = new UserDao(ConnectionProvider.getConnection());
-                if(dao.updateUser(user)){
-                    
-                    String path =  s.getServletContext().getRealPath("/") + "pic" + File.separator + user.getProfile();
-                    out.println("Path : " + path);
+                Message msg = null;
+                if (dao.updateUser(user)) {
+                    msg = new Message("Profile  Updated Sucessfull", "success", "alert-success");
+                     
+                    if(isProfilePicEdit){
+                        String path = s.getServletContext().getRealPath("/") + "pic" + File.separator + user.getProfile();
+                        String oldFilePath = s.getServletContext().getRealPath("/") + "pic" + File.separator + oldProfileName;
+                        if (!oldProfileName.equals("default.jpg")) {
+                        FileHelper.deleteFile(oldFilePath);
                    
-//                    if(FileHelper.deleteFile(path)){
-                        if(FileHelper.saveFile(part.getInputStream(), path)){
-                                out.println("Profile Updated");
 
-                        }
-                        else{
-                            out.println("File not saved..");
-                        }
-//                    }
-//                    else{
-//                        out.println("File not deleted");
-//                    }
+                    if (FileHelper.saveFile(part.getInputStream(), path)) {
+                        msg = new Message("Profile  Updated Sucessfull", "success", "alert-success");
+                    } else {
+                        msg = new Message("Profile Pic Not Updated ", "error", "alert-danger");
+                    }
+                    }
+                  }
                     
-//                    response.sendRedirect("profile_page.jsp");
+                } else {
+                    msg = new Message("Profile Not Updated ", "error", "alert-danger");
                 }
-                else{
-                     out.println("Details Not Updated");
-                }
-            
+
+                s.setAttribute("msg", msg);
+                response.sendRedirect("profile_page.jsp");
+
             } catch (ClassNotFoundException ex) {
             }
-//            
-
-            
-            out.println("<h1>Servlet EditServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
         }
     }
 

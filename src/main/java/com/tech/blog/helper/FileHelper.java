@@ -19,10 +19,8 @@ public class FileHelper {
         boolean flag = false;
         try{
             File file = new File(path);
-            if(file.exists()){
-              flag = file.delete();
-            }
-            flag = true;
+            flag = file.delete();
+           
         }
         catch(Exception exp){
          exp.printStackTrace();
