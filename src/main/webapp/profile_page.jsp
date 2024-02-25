@@ -3,15 +3,18 @@
     Created on : 19-Feb-2024, 2:32:43 pm
     Author     : haris
 --%>
+<%@page import="com.tech.blog.entity.Post"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.tech.blog.entity.Category"%>
 <%@page import="com.tech.blog.helper.ConnectionProvider"%>
 <%@page import="com.tech.blog.dao.PostDao"%>
+<%@page errorPage="error_page.jsp" %>
 <%@page import="com.tech.blog.entity.Message"%>
 <%
     User user = (User) session.getAttribute("currentUser");
     if (user == null) {
         response.sendRedirect("login_page.jsp");
+        return;
     }
 %>
 <%@page import="com.tech.blog.entity.User"%>
@@ -38,19 +41,27 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Code With Harish <span class="sr-only">(current)</span></a>
-                    </li>
+                   
 
                     <li class="nav-item dropdown ">
+                        
                         <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Categaories
                         </a>
                         <div class="dropdown-menu dropdown1" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Programming Language</a>
-                            <a class="dropdown-item" href="#">Project Implementation</a>
+                          
+                            <% PostDao dao1 = new PostDao(ConnectionProvider.getConnection());
+                               ArrayList<Category> categories1 = dao1.getAllCategories();
+                            
+                               for(Category cat : categories1){
+                            %>
+                            <a href="#" onclick="getPosts(<%= cat.getId() %> , this)" class="dropdown-item c-link"><%= cat.getName() %></a>
+                        
+
+                            <% } %>
+<!--                            <a class="dropdown-item" href="#">Project Implementation</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Data Structure</a>
+                            <a class="dropdown-item" href="#">Data Structure</a>-->
 
 
                         </div>
@@ -94,7 +105,47 @@
                 %>
 
         <!--navbar-end-->         
-
+        <!--main body start-->
+        <main>
+            <div class="container">
+                <div class="row mt-4">
+                    <!--first col-->
+                    <div class="col-md-4">
+                        <!--categories-->
+                        <div class="container">
+                        <div class="list-group">
+                          <a href="#" onclick="getPosts(0 , this)" class="list-group-item list-group-item-action  c-link" id="all-post">
+                            All Posts
+                          </a>
+                            <% PostDao dao = new PostDao(ConnectionProvider.getConnection());
+                               ArrayList<Category> categories = dao.getAllCategories();
+                            
+                               for(Category cat : categories){
+                            %>
+                            <a href="#" onclick="getPosts(<%= cat.getId() %> , this)" class="list-group-item list-group-item-action c-link"><%= cat.getName() %></a>
+                          <% } %>
+                        </div>
+                        </div>
+                    </div>
+                    
+                    <!--second column-->
+                    <div class="col-md-8" >
+                        <!--post-->                      
+                        <div class="container text-center" id="loader">
+                            <i class="fa fa-refresh fa-3x fa-spin"></i>
+                            <h3 class="mt-2">Loading...</h3>
+                        </div>
+                        
+                        <div class="container-fluid" id="post-container">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+          
+        <!--main body ends-->
+        <!--Modal ================================================================================-->
         <!-- Modal start-->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -316,30 +367,12 @@
                        
                        let form = new FormData(this);
                       
-                       console.log(form);
-//                       $.ajax({
-//                           url:"AddPostServlet",
-//                           type:'POST',
-//                           data:form,
-//                           success:function(data,textStatus , jqXHR){
-//                               console.log(data);
-//                           },
-//                           error:function(jqXHR , textStatus,errorThrown){
-//                               
-//                           }
-//                           
-//                       });
-
                           $.ajax({
                           url : "AddPostServlet",
                           type : 'POST',
                           data : form,
 
                           success:function(data , textStatus , jqXHR){     
-
-
-                          console.log(data);
-
                             if(data.trim() === 'done'){
                             swal({title:"Post Send Successfully",
                                 text :"",
@@ -349,7 +382,7 @@
                              });
                           }
                           else{
-                              swal({title:"Registration Failed..",
+                              swal({title:"Post Failed..",
                                 text :data,
                                 icon:"warning"});
                           }
@@ -370,6 +403,86 @@
 
                 });
 
+        </script>
+    
+        <!--loading post using ajax-->
+        <script>
+            
+            $("loader").show();
+            $("#post-container").hide();
+            function getPosts(catId,temp){
+                
+                $(".c-link").removeClass("active");
+                $(temp).addClass("active");
+            
+                $.ajax({
+                    url:"load_post.jsp",
+                    data:{cid:catId},
+                    success:function(data,textStatus ,jqHXR){
+                        $("#loader").hide();
+                        $("#post-container").show();
+                        $("#post-container").html(data);
+
+                        
+                    }
+                });
+            }
+            $(document).ready(function(e){
+
+                getPosts(0 , $("#all-post"));
+            });
+        </script>
+        
+         <script>
+            function likedPost(postid , userid,temp)
+            {
+                $.ajax({
+                    url:"AddLikeServlet",
+                   
+                    data:{pid:postid , uid:userid},
+                    success:function(data,textStatus ,jqHXR){
+                        let thumb = $($(temp).children()[0]);
+                        thumb.removeClass("fa-thumbs-o-up");
+                        thumb.addClass("fa-thumbs-up");
+                        $($(temp).children()[1]).text(data);
+                        console.log($(temp).children()[1]);
+                    }
+                });
+            }
+            function dislikedPost(postid , userid,temp){
+                $.ajax({
+                    url:"DeleteLikeServlet",
+                   
+                    data:{pid:postid , uid:userid},
+                    success:function(data,textStatus ,jqHXR){
+                        let thumb = $($(temp).children()[0]);
+                        thumb.removeClass("fa-thumbs-up");
+                        thumb.addClass("fa-thumbs-o-up");
+                        $($(temp).children()[1]).text(data);
+                        console.log($(temp).children()[1]);
+                    }
+                });
+            }
+            function addLike(postid , userid , temp )
+            {
+                let classList = $(temp).attr('class').split(" ");
+              
+               if(Object.values(classList).includes('disliked')){
+                 likedPost(postid , userid,temp);
+                $(temp).removeClass('disliked');
+                $(temp).addClass('liked');
+               
+               }
+               else{
+                  dislikedPost(postid , userid,temp);
+                   $(temp).removeClass('liked');
+                  $(temp).addClass('disliked');
+                 
+               }
+               
+            }
+                
+           
         </script>
     </body>
 </html>
