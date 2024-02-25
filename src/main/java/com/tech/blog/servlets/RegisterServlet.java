@@ -44,10 +44,7 @@ public class RegisterServlet extends HttpServlet {
             if (check == null) {
                 out.println("Please check terms and conditions");
             } else {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException ex) {
-                }
+              
                 String name = request.getParameter("user_name");
                 String email = request.getParameter("user_email");
                 String password = request.getParameter("user_pass");

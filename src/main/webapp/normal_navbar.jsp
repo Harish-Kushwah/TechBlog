@@ -4,13 +4,17 @@
     Author     : haris
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.tech.blog.entity.Category"%>
+<%@page import="com.tech.blog.dao.PostDao"%>
+<%@page import="com.tech.blog.helper.ConnectionProvider"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 
 
 
 <nav class="navbar  navbar-expand-lg navbar-dark primary-background navbar-sticky">
-  <a href="index.jsp" class="navbar-brand" href="#"><span class="fa fas fa-terminal"></span>&nbsp;TechBlog</a>
+    <a href="index.jsp" class="navbar-brand" href="#"><span class="fa fas fa-terminal"></span>&nbsp;TechBlog</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -26,22 +30,27 @@
           Categaories
         </a>
           <div class="dropdown-menu  dropdown1" aria-labelledby="navbarDropdown" >
-          <a class="dropdown-item" href="#">Programming Language</a>
-          <a class="dropdown-item" href="#">Project Implementation</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Data Structure</a>
-          
+
+              <% PostDao dao1 = new PostDao(ConnectionProvider.getConnection());
+                  ArrayList<Category> categories1 = dao1.getAllCategories();
+
+                  for (Category cat : categories1) {
+              %>
+              <a href="#" onclick="getPosts(<%= cat.getId()%> , this)" class="dropdown-item c-link"><%= cat.getName()%></a>
+
+
+              <% }%>
           
         </div>
       </li>
        <li class="nav-item">
-        <a class="nav-link" href="#">Contact</a>
+        <a class="nav-link" href="#"><span class="fa-solid fa-address-book"></span>&nbsp;Contact</a>
       </li>
        <li class="nav-item">
-        <a class="nav-link" href="login_page.jsp">Login</a>
+        <a class="nav-link" href="login_page.jsp"><span class="fa fas fa-sign-in"></span>&nbsp;Login</a>
       </li>
        <li class="nav-item">
-        <a class="nav-link" href="register_page.jsp">SignUp</a>
+        <a class="nav-link" href="register_page.jsp"><span class="fa fas fa-user-plus"></span>&nbsp;SignUp</a>
       </li>
       
     </ul>
