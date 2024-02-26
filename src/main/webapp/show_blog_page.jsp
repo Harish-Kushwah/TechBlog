@@ -11,6 +11,7 @@
 <%@page import="com.tech.blog.entity.Post"%>
 <%@page import="com.tech.blog.helper.ConnectionProvider"%>
 <%@page import="com.tech.blog.dao.PostDao"%>
+<%@page errorPage="error_page.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     User user = (User) session.getAttribute("currentUser");
@@ -28,10 +29,7 @@
          <link rel="icon" type="image/x-icon" href="img/ink96.png">
          <link href="css/style.css" rel="stylesheet" type="text/css"/>
          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"><!-- comment -->
-   
-       
-
-
+  
         <style>
            
             img{
@@ -70,68 +68,38 @@
         </style>
     </head>
     <body>
-        
-          
-
         <%
             PostDao postDao = new PostDao(ConnectionProvider.getConnection());
              LikeDao likeDao = new LikeDao(ConnectionProvider.getConnection());
-            int post_id = Integer.parseInt(request.getParameter("post_id"));
+             int post_id = Integer.parseInt(request.getParameter("post_id"));
 
-            Post post = postDao.getPostById(post_id);
-           
-           String name = null;
-           String likedStatus = "disliked";
-           String thumbsStatus = "fa-thumbs-o-up";
-           if (post != null) {
-               UserDao userDao = new UserDao(ConnectionProvider.getConnection());
-               User postUser = userDao.userById(post.getUser_id());
-               name = postUser.getName();
+             Post post = postDao.getPostById(post_id);
 
-               if (likeDao.isPostLikedByUser(post.getId(), user.getId())) {
-                   likedStatus = "liked";
-                   thumbsStatus = "fa-thumbs-up";
-               }
+             String name = null;
+             String likedStatus = "disliked";
+             String thumbsStatus = "fa-thumbs-o-up";
+             if (post != null) {
+                 UserDao userDao = new UserDao(ConnectionProvider.getConnection());
+                 User postUser = userDao.userById(post.getUser_id());
+                 name = postUser.getName();
 
-           } else {
-               out.println("<h3 class='display-3'>No Post Available</h3>");
-               return;
-           }
+                 if (likeDao.isPostLikedByUser(post.getId(), user.getId())) {
+                     likedStatus = "liked";
+                     thumbsStatus = "fa-thumbs-up";
+                 }
+
+             } else {
+                 out.println("<h3 class='display-3'>No Post Available</h3>");
+                 return;
+             }
         
            
             
 
         %>
-          <nav class="navbar  navbar-expand-lg navbar-dark primary-background">
-            <a class="navbar-brand" href="index.jsp"><span class="fa fas fa-terminal"></span>&nbsp;TechBlog</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                                        <li class="nav-item">
-                        <a class="nav-link" href="#"><span class="fa-solid fa-address-book"></span>&nbsp;Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="modal" data-target = "#post-modal" href="#"><span class="fa-solid fa-star"></span>&nbsp;Do Post</a>
-                    </li>
-                    
-                   
-
-                </ul>
-                <ul class="navbar-nav mr-right">
-                    <li class="nav-item">
-                       
-                        <a class="nav-link" data-toggle="modal" data-target="#exampleModal" style="cursor:pointer;"> <span class="fa fa-user-circle"></span> <%= user.getName() %></a>
-                    </li>
-                     <li class="nav-item">
-                        <a class="nav-link" href="LogoutServlet"><span class="fa fa-sign-out"></span> logout</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
+        <%@include file="profile_navbar.jsp" %>
+        
         <div class="container center-align mt-4 mycontainer">
             <!--<div class="row">-->
                 <!--<div class="col-md-12">-->
@@ -156,11 +124,8 @@
                             <p class="card-text"><pre><%= post.getCode()%></pre></p>
                         </div>
                         <div class="card-footer mycard-footer">
-                            <small class="text-muted"> Author <a href=""#><%= name %></a></small>
-                              <small class="text-muted">Post at <%= DateFormat.getDateTimeInstance().format(post.getDate()) %></small>
-                            
-                               
-                           
+                          <small class="text-muted"> Author <a href=""#><%= name %></a></small>
+                          <small class="text-muted">Post at <%= DateFormat.getDateTimeInstance().format(post.getDate()) %></small>
                         </div>
                              
                             
@@ -171,13 +136,10 @@
                 <a href="profile_page.jsp" class="btn btn-outline-primary" >Home</a>
                 <a href="show_blog_page.jsp?post_id=<%= post.getId()+1 %>" class="btn btn-outline-primary" >Next</a>
             </div>
-                <!--</div>-->
-            <!--</div>-->
-          
         </div>
                
-                <%@include file="all_modals.jsp" %>
-                <%@include file="footer.jsp" %>
+            <%@include file="all_modals.jsp" %>
+            <%@include file="footer.jsp" %>
             <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
             <script src="https://code.jquery.com/jquery-migrate-3.4.1.js"></script>
 
@@ -234,15 +196,9 @@
                    $(temp).removeClass('liked');
                   $(temp).addClass('disliked');
                  
-               }
-               
-            }
-                
-           
-                
+               }  
+            }        
         </script>
         
-        
-
     </body>
 </html>

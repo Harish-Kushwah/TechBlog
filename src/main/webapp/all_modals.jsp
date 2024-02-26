@@ -30,13 +30,6 @@
                   <div class="container text-center ">
                       <% 
                           String name1 =user1.getProfile();
-                           
-//                            if(name == null){
-//                            name = "default.jpg";
-//                          } 
-//                            name = "error.png";
-                            
-                      
                       %>
                       <img src="pic/<%= name1 %>" class="img-fluid " style="border-radius: 50%; max-width: 150px">
                       <h5 class="modal-title" id="exampleModalLabel"><%= user1.getName() %></h5>
@@ -138,56 +131,56 @@
 
         <!--profile model end-->
 
-        <!--Add Post Model-->
+<!--Add Post Model-->
 
-            <div class="modal fade" id="post-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Provide Post Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                      <form action="AddPostServlet" method="POST" id="addPostForm" enctype="multipart/form-data" >
+<div class="modal fade" id="post-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Provide Post Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form action="AddPostServlet" method="POST" id="addPostForm" enctype="multipart/form-data" >
 
-                          <div class="form-group">
-                              <select class="form-control" name="selected_cat">
-                                  <option selected disabled>---Select Category---</option>
-                                  <%
-                                      PostDao post1 = new PostDao(ConnectionProvider.getConnection());
-                                      ArrayList<Category> list1 = post1.getAllCategories();
+              <div class="form-group">
+                  <select class="form-control" name="selected_cat">
+                      <option selected disabled>---Select Category---</option>
+                      <%
+                          PostDao post1 = new PostDao(ConnectionProvider.getConnection());
+                          ArrayList<Category> list1 = post1.getAllCategories();
 
-                                      for (Category cat : list1) {
-                                  %>
-                                  <option value="<%=cat.getId()%>"><%= cat.getName()%></option>
-                                  <%}%>
-                              </select>
-                          </div>
-                          <div class="form-group">
-                              <input type="text" placeholder="Enter post title" class="form-control" name="title">
-                          </div>
-
-                          <div class="form-group">
-                              <textarea class="form-control" placeholder="Enter your content" style="height: 200px" name="content" ></textarea>
-                          </div>
-                          <div class="form-group">
-                              <textarea class="form-control" placeholder="Enter program (if any)" style="height: 200px" name="code"></textarea>
-                          </div>
-                          <div class ="form-group">
-                              <label>Select your pic</label><br>
-
-                              <input type="file" name="image" >
-                          </div>
-                          <div class=" container text-center">
-                              <button type="submit" class="btn btn-outline-primary ">Post</button>
-
-                          </div>
-                   </form>
-                  </div>
-                 
-                </div>
-                         
+                          for (Category cat : list1) {
+                      %>
+                      <option value="<%=cat.getId()%>"><%= cat.getName()%></option>
+                      <%}%>
+                  </select>
               </div>
-            </div>
+              <div class="form-group">
+                  <input type="text" placeholder="Enter post title" class="form-control" name="title">
+              </div>
+
+              <div class="form-group">
+                  <textarea class="form-control" placeholder="Enter your content" style="height: 200px" name="content" ></textarea>
+              </div>
+              <div class="form-group">
+                  <textarea class="form-control" placeholder="Enter program (if any)" style="height: 200px" name="code"></textarea>
+              </div>
+              <div class ="form-group">
+                  <label>Select your pic</label><br>
+
+                  <input type="file" name="image" >
+              </div>
+              <div class=" container text-center">
+                  <button type="submit" class="btn btn-outline-primary ">Post</button>
+
+              </div>
+       </form>
+      </div>
+
+    </div>
+
+  </div>
+</div>

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package com.tech.blog.servlets;
 
 import com.tech.blog.dao.UserDao;
@@ -25,6 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 @MultipartConfig
 public class RegisterServlet extends HttpServlet {
 
+     public static String getTrimString(String str){
+        if(str!=null){
+            str = str.trim();
+        }
+        return str;
+    }
+     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -34,6 +37,7 @@ public class RegisterServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+   
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -45,12 +49,12 @@ public class RegisterServlet extends HttpServlet {
                 out.println("Please check terms and conditions");
             } else {
               
-                String name = request.getParameter("user_name");
-                String email = request.getParameter("user_email");
-                String password = request.getParameter("user_pass");
-                String about = request.getParameter("about");
-                String gender = request.getParameter("gender");
-
+                String name = getTrimString(request.getParameter("user_name"));
+                String email = getTrimString(request.getParameter("user_email"));
+                String password = getTrimString(request.getParameter("user_pass"));
+                String about = getTrimString(request.getParameter("about"));
+                String gender = getTrimString(request.getParameter("gender"));
+                
                 //create a user dao object
                 User user = new User(name, email, password, gender, about);
                 user.setProfile("default.jpg");

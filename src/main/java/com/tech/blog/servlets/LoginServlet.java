@@ -6,8 +6,6 @@ import com.tech.blog.entity.User;
 import com.tech.blog.helper.ConnectionProvider;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -37,7 +35,7 @@ public class LoginServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
 
             String email = request.getParameter("user_email");
-            String password = request.getParameter("user_pass");
+            String password = request.getParameter("user_pass").trim();
 
             try {
                 UserDao dao = new UserDao(ConnectionProvider.getConnection());
