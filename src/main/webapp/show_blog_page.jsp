@@ -78,9 +78,10 @@
              String name = null;
              String likedStatus = "disliked";
              String thumbsStatus = "fa-thumbs-o-up";
+             User postUser = null;
              if (post != null) {
                  UserDao userDao = new UserDao(ConnectionProvider.getConnection());
-                 User postUser = userDao.userById(post.getUser_id());
+                 postUser = userDao.userById(post.getUser_id());
                  name = postUser.getName();
 
                  if (likeDao.isPostLikedByUser(post.getId(), user.getId())) {
@@ -124,12 +125,10 @@
                             <p class="card-text"><pre><%= post.getCode()%></pre></p>
                         </div>
                         <div class="card-footer mycard-footer">
-                          <small class="text-muted"> Author <a href=""#><%= name %></a></small>
+                          <small class="text-muted"> Author <a href="profile.jsp?user_id=<%= postUser.getId() %>" ><%= name %></a></small>
                           <small class="text-muted">Post at <%= DateFormat.getDateTimeInstance().format(post.getDate()) %></small>
                         </div>
-                             
-                            
-                             
+       
                     </div>
                                 <div class="container mycard-footer mb-2">
                 <a href="show_blog_page.jsp?post_id=<%= post.getId()-1 %>" class="btn btn-outline-primary" >Previous</a>
