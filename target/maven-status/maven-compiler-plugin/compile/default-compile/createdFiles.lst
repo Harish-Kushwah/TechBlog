@@ -1,11 +1,13 @@
 com\tech\blog\servlets\LoginServlet.class
 com\tech\blog\servlets\AddPostServlet.class
+com\tech\blog\dao\StatsDao.class
 com\tech\blog\dao\LikeDao.class
 com\tech\blog\entity\Post.class
 com\tech\blog\servlets\DeleteLikeServlet.class
 com\tech\blog\dao\PostDao.class
 com\tech\blog\helper\FileHelper.class
 com\tech\blog\entity\Message.class
+com\tech\blog\entity\Stats.class
 com\tech\blog\helper\ConnectionProvider.class
 com\tech\blog\servlets\MultiConfig.class
 com\techblog\resources\JakartaEE8Resource.class

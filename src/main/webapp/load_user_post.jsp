@@ -49,11 +49,12 @@
                 PostDao dao = new PostDao(ConnectionProvider.getConnection());
                 LikeDao likeDao = new LikeDao(ConnectionProvider.getConnection());
                 int catId = Integer.parseInt(request.getParameter("cid"));
+                int userId = Integer.parseInt(request.getParameter("uid"));
                 ArrayList<Post> posts = null;
                 if (catId == 0) {
-                    posts = dao.getAllPost();
+                    posts = dao.getPostByUserId(userId);
                 } else {
-                    posts = dao.getPostByCatId(catId);
+                    posts = dao.getPostByCatUserId(userId , catId);
                 }
                 if (posts.size() == 0) {
                     out.println("<h3 class='display-3 text-center'>No Blog In This Category<h3>");

@@ -10,11 +10,29 @@ import java.sql.*;
 public class UserDao {
 
     private Connection con;
+    StatsDao statsDao = null;
 
     public UserDao(Connection con) {
         this.con = con;
     }
 
+    public boolean initStats(int user_id){
+        boolean flag = false;
+        try{
+            String query = "INSERT INTO public.stats(user_id) VALUES (?);";
+            PreparedStatement st = this.con.prepareStatement(query);
+            st.setInt(1, user_id);
+            
+            st.executeQuery();
+            flag = true;
+        }
+        catch(Exception exp){
+            exp.printStackTrace();
+        }
+    
+        return flag;
+    }
+    
     //Insert user to database
     public boolean saveUser(User user) {
         boolean isDataInsert = false;
@@ -30,6 +48,7 @@ public class UserDao {
             
 
             statement.executeUpdate();
+           
             isDataInsert = true;
 
         } catch (Exception exp) {

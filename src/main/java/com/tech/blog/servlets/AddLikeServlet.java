@@ -5,6 +5,9 @@
 package com.tech.blog.servlets;
 
 import com.tech.blog.dao.LikeDao;
+import com.tech.blog.dao.PostDao;
+import com.tech.blog.dao.StatsDao;
+import com.tech.blog.entity.Post;
 import com.tech.blog.helper.ConnectionProvider;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -40,7 +43,11 @@ public class AddLikeServlet extends HttpServlet {
             
             try{
             LikeDao dao = new LikeDao(ConnectionProvider.getConnection());
-            if(dao.addLike(pid, uid)){
+            StatsDao statsDao = new StatsDao(ConnectionProvider.getConnection());
+            PostDao postDao = new PostDao(ConnectionProvider.getConnection());
+            Post post = postDao.getPostById(pid);
+            if(dao.addLike(pid, uid) && statsDao.updateTotalLikes(post.getUser_id())){
+                
                 out.println(dao.getTotalLikes(pid));
             }
             else{

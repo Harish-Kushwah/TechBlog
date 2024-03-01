@@ -60,6 +60,7 @@ public class PostDao {
             st.setInt(6, post.getUser_id());
             st.execute();
             flag = true;
+            
         }
         catch(Exception exp)
         {
@@ -165,6 +166,97 @@ public class PostDao {
         String query = "select * from public.post where categories_id = ? order by id desc;";
         PreparedStatement st = this.con.prepareStatement(query);
         st.setInt(1, catId);
+        
+        ResultSet res =  st.executeQuery();
+        while(res.next())
+        {
+            int id = res.getInt("id");
+            String title = res.getString("title");
+            String content = res.getString("content");
+            String code = res.getString("code");
+            String pic = res.getString("pic");
+             if(pic == null){
+                pic = "defaultBlog.png";
+            }
+            int categories_id = res.getInt("categories_id");
+            int userId = res.getInt("user_id");
+             
+            
+            Post post = new Post();
+            post.setContent(content);
+            post.setCode(code);
+            post.setCategories_id(categories_id);
+            post.setId(id);
+            post.setUser_id(userId);
+            post.setPic(pic);
+            post.setTitle(title);
+            post.setDate(res.getTimestamp("date"));
+            
+            list.add(post);
+          
+        }
+        
+        }
+        catch(Exception exp){
+            exp.printStackTrace();
+        }
+        
+        return list;
+    }
+    public ArrayList<Post> getPostByUserId(int user_id)
+    {
+        ArrayList<Post> list = new ArrayList<>();
+        
+        try{
+        String query = "select * from public.post where user_id = ? order by id desc;";
+        PreparedStatement st = this.con.prepareStatement(query);
+        st.setInt(1, user_id);
+        
+        ResultSet res =  st.executeQuery();
+        while(res.next())
+        {
+            int id = res.getInt("id");
+            String title = res.getString("title");
+            String content = res.getString("content");
+            String code = res.getString("code");
+            String pic = res.getString("pic");
+             if(pic == null){
+                pic = "defaultBlog.png";
+            }
+            int categories_id = res.getInt("categories_id");
+            int userId = res.getInt("user_id");
+             
+            
+            Post post = new Post();
+            post.setContent(content);
+            post.setCode(code);
+            post.setCategories_id(categories_id);
+            post.setId(id);
+            post.setUser_id(userId);
+            post.setPic(pic);
+            post.setTitle(title);
+            post.setDate(res.getTimestamp("date"));
+            
+            list.add(post);
+          
+        }
+        
+        }
+        catch(Exception exp){
+            exp.printStackTrace();
+        }
+        
+        return list;
+    }
+    public ArrayList<Post> getPostByCatUserId(int user_id , int cat_id)
+    {
+        ArrayList<Post> list = new ArrayList<>();
+        
+        try{
+        String query = "select * from public.post where user_id = ? and categories_id = ? order by id desc;";
+        PreparedStatement st = this.con.prepareStatement(query);
+        st.setInt(1, user_id);
+        st.setInt(2, cat_id);
         
         ResultSet res =  st.executeQuery();
         while(res.next())

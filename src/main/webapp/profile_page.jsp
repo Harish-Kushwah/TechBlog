@@ -58,7 +58,7 @@
                     <!--first col-->
                     <div class="col-md-4">
                         <!--categories-->
-                        <div class="container">
+                         <div class="container">
                             <div class="list-group">
                                 <a href="#" onclick="getPosts(0, this)" class="list-group-item list-group-item-action  c-link" id="all-post">
                                     All Posts
@@ -73,6 +73,7 @@
                             </div>
                         </div>
                     </div>
+                    
 
                     <!--second column-->
                     <div class="col-md-8" >

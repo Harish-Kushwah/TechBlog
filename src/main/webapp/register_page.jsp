@@ -56,8 +56,8 @@
                                     </div>
                                     <div class="form-group ">
                                         <label for="gender" >Gender</label><br>
-                                        <input type="radio" id="male" name="gender" value="male">Male
-                                        <input type="radio" id="female"name="gender" value="female">Female
+                                        <input type="radio" id="male" name="gender" value="male" checked>Male
+                                        <input type="radio" id="female" name="gender" value="female">Female
                                     </div>
                                     <div class="form-group ">
                                         <textarea class="form-control" name="about" id="" cols="40" rows="2" placeholder="Enter something about yourself"></textarea>

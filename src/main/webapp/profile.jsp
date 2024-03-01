@@ -4,11 +4,14 @@
     Author     : haris
 --%>
 
+<%@page import="com.tech.blog.entity.Stats"%>
+<%@page import="com.tech.blog.dao.StatsDao"%>
 <%@page import="com.tech.blog.dao.UserDao"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     if ((User) session.getAttribute("currentUser") == null) {
         response.sendRedirect("login_page.jsp");
+        return;
     }
 %>
 <!DOCTYPE html>
@@ -32,6 +35,17 @@
             font-weight: 400;
             margin-left: 10px;
         }
+/*        tr{
+            display:flex !important;
+            align-items: center;
+            justify-content:space-around;
+        }
+        th{
+            display:flex !important;
+            align-items: center;
+            justify-content:flex-start;
+        }*/
+       
        
         
     </style>
@@ -149,22 +163,28 @@
 
                                 <table class="table table-borderless my-table">
                                     <tbody>
-
+                                          <% 
+                                             StatsDao statsDao = new StatsDao(ConnectionProvider.getConnection());
+                                         
+                                             Stats stats = (Stats)statsDao.getStats(author.getId());
+                                            
+                                          %>
                                         <tr>
-                                            <th scope="row">Blog Score :<span>200</span></th>
-
+                                            <th scope="row">Score:</th>
+                                            <td><span><%= stats.getScore() %></span></td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Total Posts :<span>20</span></th>
+                                            <th scope="row">Total Posts:</th>
+                                            <td><span><%= stats.getTotal_posts() %></span></td>
 
+                                        </tr
+                                        <tr>
+                                            <th scope="row">Total Likes:</th>
+                                            <td><span><%= stats.getTotal_likes() %></span></td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Total Likes: <span>201</span></th>
-
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Longest Streek: <span>30</span></th>
-
+                                            <th scope="row">Streek:</th>
+                                            <td><span><%= stats.getStreek() %></span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -179,14 +199,20 @@
                         <div class="title">
                             <h5>All Posts</h5>
                         </div>
-                        <div>
+                        <div>       
                         <span>Filter The blogs :</span>
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>Open this select menu</option>
-                              <option value="1">One</option>
-                              <option value="2">Two</option>
-                              <option value="3">Three</option>
-                            </select>
+                        <select class="form-select" id="form-select" aria-label="Default select example" onchange="getPosts(<%= author.getId()%> , this)" >
+                                
+                            <option   value="0" >All Posts</option>
+                              <% PostDao dao = new PostDao(ConnectionProvider.getConnection());
+                                    ArrayList<Category> categories = dao.getAllCategories();
+
+                                    for (Category cat : categories) {
+                                %>
+                               <option value="<%= cat.getId()%>"> <%= cat.getName()%> </option>
+                                <% }%>
+                              
+                            </select>                       
                         </div>
                         <!--</div>-->
                     </div>     
@@ -204,6 +230,11 @@
             </div>
         </div>
     </main>
+                                        
+        
+                                
+                               
+                                                      
 
 
 
@@ -225,28 +256,83 @@
 
     $("loader").show();
     $("#post-container").hide();
-    function getPosts(catId, temp) {
 
-        $(".c-link").removeClass("active");
-        $(temp).addClass("active");
-
+    function getPosts(userId ,temp) {
+        let catId = temp.options[temp.selectedIndex].value;
         $.ajax({
-            url: "load_post.jsp",
-            data: {cid: catId},
+            url: "load_user_post.jsp",
+            data: {uid:userId ,  cid: catId},
             success: function (data, textStatus, jqHXR) {
                 $("#loader").hide();
                 $("#post-container").show();
                 $("#post-container").html(data);
-
-
             }
         });
     }
     $(document).ready(function (e) {
-
-        getPosts(0, $("#all-post"));
+        
+            $.ajax({
+            url: "load_user_post.jsp",
+            data: {uid: <%= author.getId()%> ,  cid: 0},
+            success: function (data, textStatus, jqHXR) {
+                $("#loader").hide();
+                $("#post-container").show();
+                $("#post-container").html(data);
+            }
+            });
     });
 </script>
 
+ <script>
+            function likedPost(postid, userid, temp)
+            {
+                $.ajax({
+                    url: "AddLikeServlet",
+
+                    data: {pid: postid, uid: userid},
+                    success: function (data, textStatus, jqHXR) {
+                        let thumb = $($(temp).children()[0]);
+                        thumb.removeClass("fa-thumbs-o-up");
+                        thumb.addClass("fa-thumbs-up");
+                        $($(temp).children()[1]).text(data);
+                        console.log($(temp).children()[1]);
+                    }
+                });
+            }
+            function dislikedPost(postid, userid, temp) {
+                $.ajax({
+                    url: "DeleteLikeServlet",
+
+                    data: {pid: postid, uid: userid},
+                    success: function (data, textStatus, jqHXR) {
+                        let thumb = $($(temp).children()[0]);
+                        thumb.removeClass("fa-thumbs-up");
+                        thumb.addClass("fa-thumbs-o-up");
+                        $($(temp).children()[1]).text(data);
+                        console.log($(temp).children()[1]);
+                    }
+                });
+            }
+            function addLike(postid, userid, temp)
+            {
+                let classList = $(temp).attr('class').split(" ");
+
+                if (Object.values(classList).includes('disliked')) {
+                    likedPost(postid, userid, temp);
+                    $(temp).removeClass('disliked');
+                    $(temp).addClass('liked');
+
+                } else {
+                    dislikedPost(postid, userid, temp);
+                    $(temp).removeClass('liked');
+                    $(temp).addClass('disliked');
+
+                }
+
+            }
+
+
+        </script>
+        
 </body>
 </html>

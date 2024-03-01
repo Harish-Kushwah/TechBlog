@@ -5,6 +5,7 @@
 package com.tech.blog.servlets;
 
 import com.tech.blog.dao.PostDao;
+import com.tech.blog.dao.StatsDao;
 import com.tech.blog.entity.Message;
 import com.tech.blog.entity.Post;
 import com.tech.blog.entity.User;
@@ -75,6 +76,8 @@ public class AddPostServlet extends HttpServlet {
 //            out.println(post);
             try {
                 PostDao dao = new PostDao(ConnectionProvider.getConnection());
+                StatsDao statDao = new StatsDao(ConnectionProvider.getConnection());
+
                 boolean status = false;
                 if (dao.addPost(post)) {
                     status = true;
@@ -91,8 +94,9 @@ public class AddPostServlet extends HttpServlet {
 
                 }
 
-                if (status == true) {
+                if (status == true &&  statDao.updateTotalPostCount(user.getId())) {
                     out.println("done");
+                   
                 } else {
                     out.println("Post Not saved ");
                 }

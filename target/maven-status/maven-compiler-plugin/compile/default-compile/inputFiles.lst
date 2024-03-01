@@ -1,5 +1,6 @@
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\dao\PostDao.java
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\entity\Category.java
+D:\JavaProject\TechBlog\src\main\java\com\tech\blog\dao\StatsDao.java
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\servlets\AddPostServlet.java
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\servlets\AddLikeServlet.java
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\servlets\MultiConfig.java
@@ -11,6 +12,7 @@ D:\JavaProject\TechBlog\src\main\java\com\tech\blog\servlets\DeleteLikeServlet.j
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\servlets\RegisterServlet.java
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\helper\ConnectionProvider.java
 D:\JavaProject\TechBlog\src\main\java\com\techblog\JakartaRestConfiguration.java
+D:\JavaProject\TechBlog\src\main\java\com\tech\blog\entity\Stats.java
 D:\JavaProject\TechBlog\src\main\java\com\techblog\resources\JakartaEE8Resource.java
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\entity\Post.java
 D:\JavaProject\TechBlog\src\main\java\com\tech\blog\dao\UserDao.java
