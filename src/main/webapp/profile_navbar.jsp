@@ -44,16 +44,16 @@
 
 
                         <% } %>
-<!--                            <a class="dropdown-item" href="#">Project Implementation</a>
+                            <a class="dropdown-item" href="#">Project Implementation</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Data Structure</a>-->
+                        <a class="dropdown-item" href="#">Data Structure</a>
 
 
                     </div>
                 </li>
-<!--                <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link" href="#"><span class="fa-solid fa-address-book"></span>&nbsp;Contact</a>
-                </li>-->
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="profile_page.jsp"><span class="fa-solid fa-address-book"></span>&nbsp;Home</a>
                 </li>
@@ -61,7 +61,7 @@
                     <a class="nav-link" data-toggle="modal" data-target = "#post-modal" href="#"><span class="fa-solid fa-star"></span>&nbsp;Do Post</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link"  href="profile.jsp?user_id=<%= nav_bar_user.getId() %>"><span class="fa-solid fa-star"></span>&nbsp;My Post</a>
+                    <a class="nav-link"  href="profile.jsp?user_id=<%= nav_bar_user.getId() %>"><span class="fa fa-sticky-note-o"></span>&nbsp;My Post</a>
                 </li>
 
 
@@ -77,4 +77,6 @@
                 </li>
             </ul>
         </div>
-    </nav>
+   
+                        
+     

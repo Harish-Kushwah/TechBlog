@@ -23,6 +23,8 @@
         <link rel="icon" type="image/x-icon" href="img/ink96.png">
         <link href="css/style.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"><!-- comment -->
+    
+    <%@include file="all_header_links.html" %>
     </head>
     <style>
         .personal-info{
@@ -50,11 +52,12 @@
         
     </style>
     <body>
-        <%@include file="profile_navbar.jsp" %>
+        <%@include file="profile_new_nav.jsp" %>
 
 
     <main>
-        <div class="container">
+        <div class="container pt-5">
+            
             <div class="row mt-4">
              <div class="col-md-12 " >
                   <div class="container personal-info">                            
@@ -184,7 +187,7 @@
                                         </tr>
                                         <tr>
                                             <th scope="row">Streek:</th>
-                                            <td><span><%= stats.getStreek() %></span></td>
+                                            <td><span><%= stats.getTotal_posts() %></span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -333,6 +336,27 @@
 
 
         </script>
-        
+        <script>
+            $(document).ready(function () {
+              
+            let edit_status = false;
+            $("#edit-profile-button").click(function () {
+
+                if (edit_status === false) {
+                    $("#profile-detail").hide();
+                    $("#profile-edit").show();
+                    $(this).text("Back");
+                    edit_status = true;
+                } else {
+                    $("#profile-detail").show();
+                    $("#profile-edit").hide();
+                    $(this).text("Edit");
+
+                    edit_status = false;
+                }
+
+            });
+        });
+        </script>
 </body>
 </html>

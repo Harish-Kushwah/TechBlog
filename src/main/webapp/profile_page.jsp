@@ -1,8 +1,3 @@
-<%-- 
-    Document   : profile_page
-    Created on : 19-Feb-2024, 2:32:43 pm
-    Author     : haris
---%>
 <%@page import="com.tech.blog.entity.Post"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.tech.blog.entity.Category"%>
@@ -29,11 +24,11 @@
         <link rel="icon" type="image/x-icon" href="img/ink96.png">
         <link href="css/style.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"><!-- comment -->
-       
+        <%@include file="all_header_links.html" %>
     </head>
 <body>
 
-        <%@include file="profile_navbar.jsp" %>
+        <%@include file="profile_new_nav.jsp" %>
 
         <%
             Message msg = (Message) session.getAttribute("msg");
@@ -53,7 +48,7 @@
 
         <!--main body start-->
         <main>
-            <div class="container">
+            <div class="container mt-5 pt-2">
                 <div class="row mt-4">
                     <!--first col-->
                     <div class="col-md-4">
@@ -107,7 +102,7 @@
 
         <script>
             $(document).ready(function () {
-
+              
             let edit_status = false;
             $("#edit-profile-button").click(function () {
 
@@ -252,5 +247,7 @@
 
 
         </script>
+        
+         <%--<%@include file="all_js_scripts.jsp" %>--%>
     </body>
 </html>

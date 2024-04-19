@@ -74,7 +74,7 @@ public class StatsDao {
         }catch(Exception exp){
             exp.printStackTrace();
         }
-        
+        System.out.println("hello post likes by" + user_id);
         return flag;
     }
     

@@ -21,6 +21,8 @@
                     clip-path: polygon(30% 0%, 100% 0, 100% 30%, 100% 88%, 73% 95%, 44% 90%, 0 95%, 0 0);
                 }
         </style>
+        
+           <%@include file="all_header_links.html" %>
     </head>
 
 
@@ -153,5 +155,7 @@
                });
             });        
         </script>
+        
+        <%--<%@include file="all_js_scripts.jsp" %>--%>
     </body>
 </html>
