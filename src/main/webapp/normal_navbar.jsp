@@ -77,7 +77,6 @@
                 <li><a class="nav-link scrollto" href="index.jsp#about">About</a></li>
                 <!--<li><a class="nav-link scrollto" href="#services">Services</a></li>-->
                 <li><a class="nav-link scrollto " href="index.jsp#portfolio">Blogs</a></li>
-                <li><a class="nav-link scrollto" href="index.jsp#team">Team</a></li>
 
                 <li><a class="nav-link scrollto" href="index.jsp#contact">Contact</a></li>
                 

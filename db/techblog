@@ -1,0 +1,629 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.4
+-- Dumped by pg_dump version 15.3
+
+-- Started on 2024-05-29 19:53:25
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 4 (class 2615 OID 2200)
+-- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+-- *not* creating schema, since initdb creates it
+
+
+ALTER SCHEMA public OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1255 OID 135104)
+-- Name: insert_into_stats(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.insert_into_stats() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    -- Insert a row into the stats table with default values when a new user is inserted
+    INSERT INTO stats (user_id)
+    VALUES (NEW.id);
+    
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.insert_into_stats() OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 212 (class 1259 OID 135017)
+-- Name: categories; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.categories (
+    id bigint NOT NULL,
+    name text,
+    description text
+);
+
+
+ALTER TABLE public.categories OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 135016)
+-- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.categories_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3377 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.categories_id_seq OWNED BY public.categories.id;
+
+
+--
+-- TOC entry 217 (class 1259 OID 135060)
+-- Name: like; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."like" (
+    id bigint NOT NULL,
+    pid bigint NOT NULL,
+    uid bigint NOT NULL,
+    date timestamp with time zone DEFAULT now()
+);
+
+
+ALTER TABLE public."like" OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 135059)
+-- Name: like_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.like_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.like_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3378 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: like_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.like_id_seq OWNED BY public."like".id;
+
+
+--
+-- TOC entry 214 (class 1259 OID 135026)
+-- Name: post; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.post (
+    id bigint NOT NULL,
+    title text NOT NULL,
+    content text,
+    code text,
+    pic text,
+    date timestamp with time zone DEFAULT now(),
+    categories_id bigint,
+    user_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.post OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 135025)
+-- Name: post_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.post_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.post_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3379 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: post_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.post_id_seq OWNED BY public.post.id;
+
+
+--
+-- TOC entry 215 (class 1259 OID 135040)
+-- Name: post_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.post_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.post_user_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3380 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: post_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.post_user_id_seq OWNED BY public.post.user_id;
+
+
+--
+-- TOC entry 219 (class 1259 OID 135088)
+-- Name: stats; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.stats (
+    id bigint NOT NULL,
+    total_posts bigint DEFAULT 0 NOT NULL,
+    total_likes bigint DEFAULT 0 NOT NULL,
+    streek bigint DEFAULT 0 NOT NULL,
+    score bigint DEFAULT 0 NOT NULL,
+    user_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.stats OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1259 OID 135087)
+-- Name: stats_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.stats_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3381 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.stats_id_seq OWNED BY public.stats.id;
+
+
+--
+-- TOC entry 210 (class 1259 OID 134997)
+-- Name: user; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."user" (
+    id bigint NOT NULL,
+    name text NOT NULL,
+    email text NOT NULL,
+    password text NOT NULL,
+    gender text,
+    about text,
+    reg_date timestamp with time zone DEFAULT now(),
+    profile text
+);
+
+
+ALTER TABLE public."user" OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 134996)
+-- Name: user_id_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.user_id_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_id_seq1 OWNER TO postgres;
+
+--
+-- TOC entry 3382 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: user_id_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.user_id_seq1 OWNED BY public."user".id;
+
+
+--
+-- TOC entry 3188 (class 2604 OID 135020)
+-- Name: categories id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.categories_id_seq'::regclass);
+
+
+--
+-- TOC entry 3192 (class 2604 OID 135063)
+-- Name: like id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."like" ALTER COLUMN id SET DEFAULT nextval('public.like_id_seq'::regclass);
+
+
+--
+-- TOC entry 3189 (class 2604 OID 135029)
+-- Name: post id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post ALTER COLUMN id SET DEFAULT nextval('public.post_id_seq'::regclass);
+
+
+--
+-- TOC entry 3191 (class 2604 OID 135041)
+-- Name: post user_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post ALTER COLUMN user_id SET DEFAULT nextval('public.post_user_id_seq'::regclass);
+
+
+--
+-- TOC entry 3194 (class 2604 OID 135091)
+-- Name: stats id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.stats ALTER COLUMN id SET DEFAULT nextval('public.stats_id_seq'::regclass);
+
+
+--
+-- TOC entry 3186 (class 2604 OID 135000)
+-- Name: user id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."user" ALTER COLUMN id SET DEFAULT nextval('public.user_id_seq1'::regclass);
+
+
+--
+-- TOC entry 3363 (class 0 OID 135017)
+-- Dependencies: 212
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.categories (id, name, description) FROM stdin;
+5	Programming Languages	Explore various programming languages, their features, syntax, and applications in software development. Topics may include tutorials, comparisons, best practices, and language-specific libraries/frameworks.
+6	Web Development	Dive into the world of web development, covering topics such as HTML, CSS, JavaScript, front-end frameworks (e.g., React, Angular, Vue.js), back-end development (e.g., Node.js, Django, Flask), web design principles, and responsive web development.
+7	Data Science & Machine Learning	Explore the field of data science and machine learning, including data analysis techniques, statistical methods, machine learning algorithms, deep learning frameworks (e.g., TensorFlow, PyTorch), and real-world applications in fields such as finance, healthcare, and marketing.
+8	Cybersecurity & Ethical Hacking	Delve into cybersecurity principles, best practices, and tools for protecting systems and data from cyber threats. Topics may include network security, cryptography, penetration testing, ethical hacking methodologies, and cybersecurity certifications.
+9	Cloud Computing	Learn about cloud computing platforms (e.g., AWS, Azure, Google Cloud), cloud services (e.g., SaaS, PaaS, IaaS), cloud architecture, serverless computing, containerization (e.g., Docker, Kubernetes), and cloud migration strategies.
+10	Mobile App Development	Explore mobile app development for iOS, Android, and cross-platform frameworks (e.g., Flutter, React Native). Topics may include mobile app design, development tools, user experience (UX) design, mobile app testing, and app store optimization (ASO).
+11	Artificial Intelligence & Robotics	Explore artificial intelligence (AI) and robotics technologies, including machine learning, natural language processing (NLP), computer vision, autonomous systems, robotics programming, and ethical considerations in AI development.
+12	UI/UX Design	Learn about user interface (UI) and user experience (UX) design principles, techniques, and tools for creating intuitive and engaging digital experiences. Topics may include wireframing, prototyping, usability testing, interaction design, and accessibility
+13	Blockchain & Cryptocurrency	Dive into blockchain technology, cryptocurrencies, and decentralized applications (DApps). Topics may include blockchain fundamentals, smart contracts, cryptocurrency mining, decentralized finance (DeFi), non-fungible tokens (NFTs), and blockchain use cases beyond finance
+\.
+
+
+--
+-- TOC entry 3368 (class 0 OID 135060)
+-- Dependencies: 217
+-- Data for Name: like; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."like" (id, pid, uid, date) FROM stdin;
+249	35	31	2024-04-20 00:59:34.925941+05:30
+250	34	31	2024-04-20 00:59:41.498459+05:30
+251	33	31	2024-04-20 01:02:57.702563+05:30
+252	32	31	2024-04-20 01:03:14.813311+05:30
+255	38	32	2024-04-21 13:50:21.288741+05:30
+256	36	32	2024-04-21 13:50:23.290722+05:30
+257	34	32	2024-04-21 13:50:27.57221+05:30
+258	32	32	2024-04-21 13:50:29.557116+05:30
+259	33	32	2024-04-21 13:50:31.269782+05:30
+260	35	32	2024-04-21 13:50:33.654123+05:30
+261	37	32	2024-04-21 13:50:35.29897+05:30
+\.
+
+
+--
+-- TOC entry 3365 (class 0 OID 135026)
+-- Dependencies: 214
+-- Data for Name: post; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.post (id, title, content, code, pic, date, categories_id, user_id) FROM stdin;
+32	Getting Started with Python: A Beginner's Guide	Python is a high-level, interpreted programming language known for its simplicity and readability. It is versatile and widely used for various applications, including web development, data analysis, artificial intelligence, and more. One of Python's strengths is its extensive standard library, which provides ready-to-use modules and functions for various tasks.	Let's start with a simple Python program that prints "Hello, World!" to the console:\r\n\r\npython\r\nCopy code\r\nprint("Hello, World!")\r\nIn Python, print() is a built-in function used to display output to the console. Strings in Python are enclosed in single ('') or double ("") quotes.\r\n\r\nData Types:\r\nPython supports several data types, including integers, floating-point numbers, strings, lists, tuples, dictionaries, and more. Here are a few examples:\r\n\r\npython\r\nCopy code\r\n# Integer\r\nx = 10\r\n\r\n# Float\r\ny = 3.14\r\n\r\n# String\r\nname = "John Doe"\r\n\r\n# List\r\nfruits = ['apple', 'banana', 'orange']\r\n\r\n# Tuple\r\ncoordinates = (10, 20)\r\n\r\n# Dictionary\r\nperson = {'name': 'Alice', 'age': 30}\r\nControl Structures:\r\nPython provides control structures such as if...else statements, for loops, while loops, and more for program flow control. Here's an example of an if...else statement:\r\n\r\npython\r\nCopy code\r\nx = 10\r\n\r\nif x > 0:\r\n    print("Positive")\r\nelif x == 0:\r\n    print("Zero")\r\nelse:\r\n    print("Negative")\r\nCommon Libraries/Frameworks:\r\nPython has a rich ecosystem of libraries and frameworks for various purposes. Some commonly used ones include:\r\n\r\nNumPy: For numerical computing and array manipulation.\r\nPandas: For data manipulation and analysis.\r\nMatplotlib: For creating data visualizations.\r\nTensorFlow: For machine learning and deep learning.\r\nFlask/Django: For web development.	python_img.webp	2024-04-20 00:41:20.729787+05:30	5	32
+33	Getting Started with Java: A Beginner's Guide	Java is a high-level, object-oriented programming language developed by Sun Microsystems (now owned by Oracle). It is used for building a wide range of applications, from mobile apps and web servers to enterprise-level systems. One of Java's key features is its "write once, run anywhere" philosophy, which allows Java programs to run on any platform with the Java Virtual Machine (JVM).	Basic Syntax:\r\nLet's start with a simple Java program that prints "Hello, World!" to the console:\r\n\r\njava\r\nCopy code\r\npublic class HelloWorld {\r\n    public static void main(String[] args) {\r\n        System.out.println("Hello, World!");\r\n    }\r\n}\r\nIn Java, a program consists of one or more classes. The main() method serves as the entry point for the program, and System.out.println() is used to print output to the console.\r\n\r\nData Types:\r\nJava supports various data types, including integers, floating-point numbers, characters, strings, arrays, and objects. Here are a few examples:\r\n\r\njava\r\nCopy code\r\n// Integer\r\nint x = 10;\r\n\r\n// Float\r\nfloat y = 3.14f;\r\n\r\n// String\r\nString name = "John Doe";\r\n\r\n// Array\r\nint[] numbers = {1, 2, 3, 4, 5};\r\n\r\n// Object\r\nPerson person = new Person("Alice", 30);\r\nControl Structures:\r\nJava provides control structures such as if...else statements, for loops, while loops, and switch statements for program flow control. Here's an example of an if...else statement:\r\n\r\njava\r\nCopy code\r\nint x = 10;\r\n\r\nif (x > 0) {\r\n    System.out.println("Positive");\r\n} else if (x == 0) {\r\n    System.out.println("Zero");\r\n} else {\r\n    System.out.println("Negative");\r\n}	javaImg.png	2024-04-20 00:42:59.74617+05:30	5	32
+34	Getting Started with C: A Beginner's Guide	C is a procedural programming language developed by Dennis Ritchie at Bell Labs in the early 1970s. It is used for developing system software, embedded systems, device drivers, and more. C is known for its low-level features, which provide direct access to memory and hardware resources, making it ideal for programming close to the hardware.	Let's start with a simple C program that prints "Hello, World!" to the console:\r\n\r\nc\r\nCopy code\r\n#include <stdio.h>\r\n\r\nint main() {\r\n    printf("Hello, World!\\n");\r\n    return 0;\r\n}\r\nIn C, a program consists of one or more functions. The main() function serves as the entry point for the program, and printf() is used to print output to the console.\r\n\r\nData Types:\r\nC supports various data types, including integers, floating-point numbers, characters, arrays, and pointers. Here are a few examples:\r\n\r\nc\r\nCopy code\r\n// Integer\r\nint x = 10;\r\n\r\n// Float\r\nfloat y = 3.14;\r\n\r\n// Character\r\nchar ch = 'A';\r\n\r\n// Array\r\nint numbers[5] = {1, 2, 3, 4, 5};\r\n\r\n// Pointer\r\nint *ptr = NULL;\r\nControl Structures:\r\nC provides control structures such as if...else statements, for loops, while loops, and switch statements for program flow control. Here's an example of an if...else statement:\r\n\r\nc\r\nCopy code\r\nint x = 10;\r\n\r\nif (x > 0) {\r\n    printf("Positive\\n");\r\n} else if (x == 0) {\r\n    printf("Zero\\n");\r\n} else {\r\n    printf("Negative\\n");\r\n}	c-lang.png	2024-04-20 00:45:25.287399+05:30	5	32
+35	Mastering HTML & CSS: Building Responsive Web Layouts	In this blog post, we'll delve into the fundamentals of HTML and CSS to create responsive web layouts. We'll start by understanding the structure of HTML documents and how to use semantic tags for better accessibility and SEO. Then, we'll explore CSS styling techniques to design visually appealing web pages. Topics covered include CSS selectors, box model, flexbox, and grid layout. By the end of this guide, you'll have the skills to build responsive and elegant web layouts from scratch.		html_css.jpg	2024-04-20 00:48:14.858644+05:30	6	32
+36	Exploring JavaScript Frameworks: A Comparative Study	JavaScript frameworks have revolutionized the way we build dynamic and interactive web applications. In this blog post, we'll compare and contrast popular JavaScript frameworks such as React, Angular, and Vue.js. We'll discuss their features, performance, ecosystem, and use cases. Additionally, we'll provide code examples and tutorials to help you get started with each framework. Whether you're a beginner or an experienced developer, this guide will help you choose the right JavaScript framework for your next web project.		\N	2024-04-20 01:15:04.206845+05:30	6	33
+37	Demystifying Data Science: A Beginner's Guide	Data science is a rapidly evolving field that combines statistical analysis, machine learning, and domain expertise to extract insights and knowledge from data. In today's data-driven world, data science plays a crucial role in various industries, from healthcare and finance to marketing and entertainment. In this blog post, we'll delve into the fundamentals of data science, its applications, and how you can embark on your journey into this exciting field.		datascience.jpg	2024-04-20 09:34:45.694428+05:30	7	34
+38	ai	ai		\N	2024-04-20 16:31:25.681528+05:30	11	35
+\.
+
+
+--
+-- TOC entry 3370 (class 0 OID 135088)
+-- Dependencies: 219
+-- Data for Name: stats; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.stats (id, total_posts, total_likes, streek, score, user_id) FROM stdin;
+23	0	0	0	0	39
+24	0	0	0	0	40
+22	1	1	0	7	35
+20	1	1	0	7	33
+21	1	1	0	7	34
+\.
+
+
+--
+-- TOC entry 3361 (class 0 OID 134997)
+-- Dependencies: 210
+-- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."user" (id, name, email, password, gender, about, reg_date, profile) FROM stdin;
+30	harish	loyorem574@storesr.com	123	male	123	2024-03-21 20:54:51.105335+05:30	default.jpg
+31	harish	s@gmail.com	123	male		2024-03-23 11:31:18.039137+05:30	default.jpg
+32	Harish  Kushwah	h@gmail.com	123	male	I am good at programming	2024-04-19 17:42:48.556208+05:30	g1.jpg
+33	Radhe	r@gmail.com	123	male		2024-04-20 01:14:18.65114+05:30	default.jpg
+34	Pooja Deore	poojadeore@gmail.com	123	female	haapy	2024-04-20 09:29:35.025589+05:30	pooja.jpeg
+35	kalyani pawar	krantip889@gmail.com	123	female	happy	2024-04-20 13:27:47.483149+05:30	default.jpg
+39	kalyani pawar	krantip8890@gmail.com	123	female	happy	2024-04-20 13:30:01.140482+05:30	default.jpg
+40	mayur ahire	mayurahire4113@gmail.com	123	male	happy	2024-04-20 13:36:09.875655+05:30	default.jpg
+\.
+
+
+--
+-- TOC entry 3383 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.categories_id_seq', 14, true);
+
+
+--
+-- TOC entry 3384 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: like_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.like_id_seq', 261, true);
+
+
+--
+-- TOC entry 3385 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: post_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.post_id_seq', 38, true);
+
+
+--
+-- TOC entry 3386 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: post_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.post_user_id_seq', 1, false);
+
+
+--
+-- TOC entry 3387 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: stats_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.stats_id_seq', 24, true);
+
+
+--
+-- TOC entry 3388 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: user_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.user_id_seq1', 40, true);
+
+
+--
+-- TOC entry 3204 (class 2606 OID 135024)
+-- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3211 (class 2606 OID 135066)
+-- Name: like like_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."like"
+    ADD CONSTRAINT like_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3207 (class 2606 OID 135034)
+-- Name: post post_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post
+    ADD CONSTRAINT post_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3214 (class 2606 OID 135097)
+-- Name: stats stats_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.stats
+    ADD CONSTRAINT stats_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3200 (class 2606 OID 135015)
+-- Name: user user_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."user"
+    ADD CONSTRAINT user_email_key UNIQUE (email);
+
+
+--
+-- TOC entry 3202 (class 2606 OID 135005)
+-- Name: user user_pkey1; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."user"
+    ADD CONSTRAINT user_pkey1 PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3208 (class 1259 OID 135072)
+-- Name: fki_pid; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fki_pid ON public."like" USING btree (pid);
+
+
+--
+-- TOC entry 3205 (class 1259 OID 135053)
+-- Name: fki_post_user; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fki_post_user ON public.post USING btree (user_id);
+
+
+--
+-- TOC entry 3209 (class 1259 OID 135078)
+-- Name: fki_uid; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fki_uid ON public."like" USING btree (uid);
+
+
+--
+-- TOC entry 3212 (class 1259 OID 135103)
+-- Name: fki_user; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fki_user ON public.stats USING btree (user_id);
+
+
+--
+-- TOC entry 3220 (class 2620 OID 135105)
+-- Name: user user_insert_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER user_insert_trigger AFTER INSERT ON public."user" FOR EACH ROW EXECUTE FUNCTION public.insert_into_stats();
+
+
+--
+-- TOC entry 3215 (class 2606 OID 135035)
+-- Name: post categories_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post
+    ADD CONSTRAINT categories_fk FOREIGN KEY (categories_id) REFERENCES public.categories(id);
+
+
+--
+-- TOC entry 3217 (class 2606 OID 135067)
+-- Name: like pid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."like"
+    ADD CONSTRAINT pid FOREIGN KEY (pid) REFERENCES public.post(id) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- TOC entry 3216 (class 2606 OID 135048)
+-- Name: post post_user; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post
+    ADD CONSTRAINT post_user FOREIGN KEY (user_id) REFERENCES public."user"(id) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- TOC entry 3218 (class 2606 OID 135073)
+-- Name: like uid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."like"
+    ADD CONSTRAINT uid FOREIGN KEY (uid) REFERENCES public."user"(id) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- TOC entry 3219 (class 2606 OID 135098)
+-- Name: stats user; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.stats
+    ADD CONSTRAINT "user" FOREIGN KEY (user_id) REFERENCES public."user"(id) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- TOC entry 3376 (class 0 OID 0)
+-- Dependencies: 4
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE USAGE ON SCHEMA public FROM PUBLIC;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2024-05-29 19:53:26
+
+--
+-- PostgreSQL database dump complete
+--
+

@@ -40,6 +40,13 @@
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
 </head>
+<style>
+    .pimg{
+        max-height: 400px;
+        
+        
+    }
+</style>
 
 <body>
 
@@ -516,7 +523,7 @@ else{
     </section><!-- End Portfolio Section -->
 
     <!-- ======= Team Section ======= -->
-    <section id="team" class="team section-bg">
+<!--    <section id="team" class="team section-bg">
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
@@ -530,7 +537,7 @@ else{
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
             <div class="member">
               <div class="member-img">
-                <img src="assets/img/team/team-1.jpg" class="img-fluid" alt="">
+                <img class="pimg" src="assets/img/team/kalyani.JPG" class="img-fluid" alt="">
                 <div class="social">
                   <a href=""><i class="bi bi-twitter"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>
@@ -539,8 +546,8 @@ else{
                 </div>
               </div>
               <div class="member-info">
-                <h4>Walter White</h4>
-                <span>Chief Executive Officer</span>
+                <h4>Kalyani  Pawar</h4>
+                <span>TYBsc(CS)</span>
               </div>
             </div>
           </div>
@@ -548,7 +555,7 @@ else{
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
             <div class="member">
               <div class="member-img">
-                <img src="assets/img/team/team-2.jpg" class="img-fluid" alt="">
+                <img class="pimg" src="assets/img/team/mayur.jpeg" class="img-fluid" alt="">
                 <div class="social">
                   <a href=""><i class="bi bi-twitter"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>
@@ -557,8 +564,8 @@ else{
                 </div>
               </div>
               <div class="member-info">
-                <h4>Sarah Jhonson</h4>
-                <span>Product Manager</span>
+                <h4>Mayur Ahire</h4>
+                <span>TYBsc(CS)</span>
               </div>
             </div>
           </div>
@@ -566,7 +573,7 @@ else{
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
             <div class="member">
               <div class="member-img">
-                <img src="assets/img/team/team-3.jpg" class="img-fluid" alt="">
+                <img class="pimg" src="assets/img/team/pooja.jpeg" class="img-fluid" alt="">
                 <div class="social">
                   <a href=""><i class="bi bi-twitter"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>
@@ -575,8 +582,8 @@ else{
                 </div>
               </div>
               <div class="member-info">
-                <h4>William Anderson</h4>
-                <span>CTO</span>
+                <h4>Pooja Deore</h4>
+                <span>TYBsc(CS)</span>
               </div>
             </div>
           </div>
@@ -584,7 +591,7 @@ else{
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
             <div class="member">
               <div class="member-img">
-                <img src="assets/img/team/team-4.jpg" class="img-fluid" alt="">
+                <img class="pimg" src="assets/img/team/radhe.jpeg" class="img-fluid" alt="">
                 <div class="social">
                   <a href=""><i class="bi bi-twitter"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>
@@ -593,8 +600,8 @@ else{
                 </div>
               </div>
               <div class="member-info">
-                <h4>Amanda Jepson</h4>
-                <span>Accountant</span>
+                <h4>Tushar Chaudhari</h4>
+                <span>TYBsc(CS)</span>
               </div>
             </div>
           </div>
@@ -602,7 +609,7 @@ else{
         </div>
 
       </div>
-    </section><!-- End Team Section -->
+    </section> End Team Section -->
 
     <!-- ======= Pricing Section ======= -->
 
